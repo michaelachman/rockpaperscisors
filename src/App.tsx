@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import rockImage from "./assets/rock.svg";
+import paperImage from "./assets/paper.svg";
+import scissorsImage from "./assets/scissors.svg";
 
 type Game = {
   pcChoice: string;
@@ -90,21 +93,21 @@ function App() {
             userChose("rock");
           }}
         >
-          <img src="./public/rock.svg" className="choice"></img>
+          <img src={rockImage} className="choice"></img>
         </button>
         <button
           onClick={() => {
             userChose("paper");
           }}
         >
-          <img src="./public/paper.svg" className="choice"></img>
+          <img src={paperImage} className="choice"></img>
         </button>
         <button
           onClick={() => {
             userChose("scissors");
           }}
         >
-          <img src="./public/scissors.svg" className="choice"></img>
+          <img src={scissorsImage} className="choice"></img>
         </button>
       </div>
       {game && (
