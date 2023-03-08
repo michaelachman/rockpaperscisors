@@ -4,15 +4,22 @@ import rockImage from "./assets/rock.svg";
 import paperImage from "./assets/paper.svg";
 import scissorsImage from "./assets/scissors.svg";
 
+type PossibleChoice = "rock" | "paper" | "scissors";
+
 type Game = {
-  pcChoice: string;
-  userChoice: string;
+  pcChoice: PossibleChoice;
+  userChoice: PossibleChoice;
 };
 
 function App() {
   const [count, setCount] = useState(0);
   const [currentResult, setCurrentResult] = useState("");
   const [game, setGame] = useState<Game | null>(null);
+  const srcMap = {
+    rock: rockImage,
+    paper: paperImage,
+    scissors: scissorsImage,
+  };
 
   useEffect(() => {
     if (game) {
@@ -21,15 +28,15 @@ function App() {
     }
   }, [game]);
 
-  const rps = ["rock", "paper", "scissors"];
+  const rps = ["rock", "paper", "scissors"] as const;
 
-  function pcChose() {
+  function pcChose(): PossibleChoice {
     const drawnNumber = Math.floor(Math.random() * 3);
     const drawnChoice = rps[drawnNumber];
     return drawnChoice;
   }
 
-  function userChose(choice: string) {
+  function userChose(choice: PossibleChoice) {
     const pcChosen = pcChose();
     setGame({
       pcChoice: pcChosen,
@@ -115,7 +122,7 @@ function App() {
           <div className="flex choice justify-start">
             <p>
               Your choice:
-              <img src={`./public/${game?.userChoice}.svg`}></img>
+              <img src={srcMap[game.userChoice]}></img>
             </p>
           </div>
           <div className="flex justify-center items-center p-6">
@@ -124,7 +131,7 @@ function App() {
           <div className="flex choice justify-end">
             <p>
               PC choice:
-              <img src={`./public/${game?.pcChoice}.svg`}></img>
+              <img src={srcMap[game.pcChoice]}></img>
             </p>
           </div>
         </div>
