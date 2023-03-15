@@ -11,7 +11,15 @@
     width: 150px;
     height: 150px;
   }
+
   .title {
     font-size: xx-large;
+    letter-spacing: 0em;
+    font-weight: 500;
   }
+}
+
+.score {
+  width: 125px;
+  height: 80px;
 }
