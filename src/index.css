@@ -6,11 +6,6 @@
   h1 {
     max-width: max-content;
   }
-  .choice {
-    display: flex;
-    width: 150px;
-    height: 150px;
-  }
 
   .title {
     font-size: xx-large;

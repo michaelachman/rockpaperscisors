@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import rockImage from "./assets/rock.svg";
-import paperImage from "./assets/paper.svg";
-import scissorsImage from "./assets/scissors.svg";
+import { Shape } from "./components/Shape";
 
 type PossibleChoice = "rock" | "paper" | "scissors";
 
@@ -15,11 +13,7 @@ function App() {
   const [count, setCount] = useState(0);
   const [currentResult, setCurrentResult] = useState("");
   const [game, setGame] = useState<Game | null>(null);
-  const srcMap = {
-    rock: rockImage,
-    paper: paperImage,
-    scissors: scissorsImage,
-  };
+  const [resultColor, setResultColor] = useState("");
 
   useEffect(() => {
     if (game) {
@@ -65,12 +59,17 @@ function App() {
 
     setCount((prevV) => {
       if (result === "YOU WIN") {
+        setResultColor("text-green-500");
         return prevV + 1;
       } else if (result === "PC WON") {
+        setResultColor("text-red-500");
         return prevV - 1;
+      } else if (result === "DRAW") {
+        setResultColor("text-white");
       }
       return prevV;
     });
+
     console.log(result);
     return result;
   }
@@ -94,49 +93,60 @@ function App() {
           <h1>{count}</h1>
         </div>
       </div>
-      <div className="flex items-center mt-10">
-        <button
-          onClick={() => {
-            userChose("rock");
-          }}
-          className="flex w-40 h-40 rounded-full border-8 border-red-500/75 mx-4 items-center justify-center"
-        >
-          <img src={rockImage} className="w-28 h-28"></img>
-        </button>
-        <button
-          onClick={() => {
-            userChose("paper");
-          }}
-          className="flex w-40 h-40 rounded-full border-8 border-blue-500/75 mx-4 items-center justify-center"
-        >
-          <img src={paperImage} className="w-36 h-36"></img>
-        </button>
-        <button
-          onClick={() => {
-            userChose("scissors");
-          }}
-          className="flex w-40 h-40 rounded-full border-8 border-yellow-500/75 mx-4 items-center justify-center"
-        >
-          <img src={scissorsImage} className="w-32 h-32"></img>
-        </button>
-      </div>
+      {!game && (
+        <div className="flex items-center mt-24 text-white">
+          <Shape
+            variant="rock"
+            onClick={() => {
+              userChose("rock");
+            }}
+          ></Shape>
+
+          <Shape
+            variant="paper"
+            onClick={() => {
+              userChose("paper");
+            }}
+          ></Shape>
+          <Shape
+            variant="scissors"
+            onClick={() => {
+              userChose("scissors");
+            }}
+          ></Shape>
+        </div>
+      )}
       {game && (
-        <div className="flex justify-between text-center pt-12">
-          <div className="flex choice justify-start w-40">
-            <p className="text-2xl text-white">
-              YOUR CHOICE
-              <img src={srcMap[game.userChoice]}></img>
-            </p>
+        <div>
+          <div className="flex justify-between text-center mt-8 text-white">
+            <div className="flex choice justify-start w-40">
+              <p className="text-2xl">
+                YOUR CHOICE
+                <Shape variant={game.userChoice}></Shape>
+              </p>
+            </div>
+            <div className="flex flex-col justify-center items-center p-6 border-4 border-white mx-8 mt-6 rounded-lg">
+              <h1 className="text-2xl">RESULT</h1>
+              <h1 className={`text-4xl font-bold ${resultColor}`}>
+                {currentResult}
+              </h1>
+            </div>
+            <div className="flex justify-end w-40">
+              <p className="text-2xl cursor-default">
+                PC CHOICE
+                <Shape variant={game.pcChoice}></Shape>
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col justify-center items-center p-6 text-white border border-white mx-8 mt-6 rounded-lg">
-            <h1 className="text-2xl">RESULT</h1>
-            <h1 className="text-4xl font-bold">{currentResult}</h1>
-          </div>
-          <div className="flex choice justify-end w-40">
-            <p className="text-2xl text-white">
-              PC CHOICE
-              <img src={srcMap[game.pcChoice]}></img>
-            </p>
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => {
+                setGame(null);
+              }}
+              className="bg-white rounded-md px-4 py-2 font-semibold"
+            >
+              PLAY AGAIN
+            </button>
           </div>
         </div>
       )}
@@ -146,5 +156,5 @@ function App() {
 
 export default App;
 
-// 1. jak pomniejszyc ten kamien zeby dopasowac go wielkosciowo do papieru i nozyc ktore sa mniejsze
-// 2. jak zrobic zeby mozliwosc klikniecia buttona sie pojawila dopiero w momencie jak najade na obszar obrazka a nie zeby byla opcja na klikniecie w divie ale poza okraglym borderem
+// mialem zrobic zeby czcionka byla na zielono/czerwono/bialo zaleznie od resulta, wiec dolozylem nowego state z resultcolorem i setnalem to w srodku gameResulta zaleznie od tego jaki
+// jest wynik i na takiej samej zasadzie jak wczoraj wrzucilem w classname tego state
